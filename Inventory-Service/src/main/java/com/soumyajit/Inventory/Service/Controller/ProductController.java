@@ -33,7 +33,7 @@ public class ProductController {
                 .getInstances("Order-Service").getFirst();
 
         return restClient.get()
-                .uri(orderService.getUri()+"/api/v1/orders/hello")
+                .uri(orderService.getUri()+"/orders/core/hello")
                 .retrieve()
                 .body(String.class);
     }
