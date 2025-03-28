@@ -6,6 +6,8 @@ import com.soumyajit.Order.Service.Entity.Enums.OrderStatus;
 import com.soumyajit.Order.Service.Entity.Orders;
 import com.soumyajit.Order.Service.Entity.OrdersItem;
 import com.soumyajit.Order.Service.Repository.OrderRepository;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -41,7 +43,10 @@ public class OrderService {
 
 
     @Transactional
+    @Retry(name="inventoryRetry",fallbackMethod = "createOrderFallbackMethod")
+    @RateLimiter(name = "inventoryRatelimiter",fallbackMethod = "createOrderFallbackMethod")
     public OrderRequestDTO createOrder(OrderRequestDTO orderRequestDTO) {
+        log.info("Calling the createOrder method");
         Double totalPrice = inventoryClient.reduceStocks(orderRequestDTO);
         Orders orders = modelMapper.map(orderRequestDTO,Orders.class);
         for (OrdersItem ordersItem : orders.getItems()){
@@ -51,6 +56,11 @@ public class OrderService {
         orders.setOrderStatus(OrderStatus.CONFIRMED);
         Orders saveedOrders = orderRepository.save(orders);
         return modelMapper.map(orders,OrderRequestDTO.class);
+    }
+
+    public OrderRequestDTO createOrderFallbackMethod(OrderRequestDTO orderRequestDTO,Throwable throwable) {
+        log.error("Fallback method {}",throwable.getLocalizedMessage());
+        return new OrderRequestDTO();
     }
 
 
