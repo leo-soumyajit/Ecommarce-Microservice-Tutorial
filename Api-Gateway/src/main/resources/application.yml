@@ -14,7 +14,7 @@ spring:
             - Method= GET, POST, PUT, DELETE
           filters:
             - StripPrefix=2
-            - RedirectTo=302, http://codingshuttle.com #it will redirect u to this link
+            #- RedirectTo=302, http://codingshuttle.com #it will redirect u to this link
 
 
         - id: Inventory-Service #application name

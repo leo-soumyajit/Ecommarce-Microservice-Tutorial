@@ -1,13 +1,12 @@
 package com.soumyajit.Order.Service.Controller;
 
+import com.soumyajit.Order.Service.Clients.InventoryClient;
 import com.soumyajit.Order.Service.DTOS.OrderRequestDTO;
 import com.soumyajit.Order.Service.Service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -16,6 +15,7 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+
 
     @GetMapping("/hello")
     public String helloOrders(){
@@ -32,4 +32,9 @@ public class OrderController {
     public ResponseEntity<OrderRequestDTO> getOrderById(@PathVariable Long id){
         return ResponseEntity.ok(orderService.getOrderById(id));
     }
+    @PostMapping("/create-order")
+    public ResponseEntity<OrderRequestDTO> createOrder(@RequestBody OrderRequestDTO orderRequestDTO){
+        return ResponseEntity.ok(orderService.createOrder(orderRequestDTO));
+    }
+
 }

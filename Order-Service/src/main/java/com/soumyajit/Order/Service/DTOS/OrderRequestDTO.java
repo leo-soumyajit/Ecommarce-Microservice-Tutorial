@@ -16,6 +16,5 @@ public class OrderRequestDTO {
     private Long id;
     private OrderStatus orderStatus;
     private Double totalPrice;
-    @JsonIgnore
     private List<OrdersItem> items;
 }
