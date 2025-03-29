@@ -6,6 +6,7 @@ import com.soumyajit.Order.Service.Entity.Enums.OrderStatus;
 import com.soumyajit.Order.Service.Entity.Orders;
 import com.soumyajit.Order.Service.Entity.OrdersItem;
 import com.soumyajit.Order.Service.Repository.OrderRepository;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
@@ -43,8 +44,9 @@ public class OrderService {
 
 
     @Transactional
-    @Retry(name="inventoryRetry",fallbackMethod = "createOrderFallbackMethod")
-    @RateLimiter(name = "inventoryRatelimiter",fallbackMethod = "createOrderFallbackMethod")
+    //@Retry(name="inventoryRetry",fallbackMethod = "createOrderFallbackMethod")
+    @CircuitBreaker(name="inventoryCircuitBreaker",fallbackMethod = "createOrderFallbackMethod")
+    //@RateLimiter(name = "inventoryRatelimiter",fallbackMethod = "createOrderFallbackMethod")
     public OrderRequestDTO createOrder(OrderRequestDTO orderRequestDTO) {
         log.info("Calling the createOrder method");
         Double totalPrice = inventoryClient.reduceStocks(orderRequestDTO);
