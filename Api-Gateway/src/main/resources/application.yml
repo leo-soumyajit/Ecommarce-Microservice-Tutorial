@@ -1,3 +1,6 @@
+jwt:
+  secretKey: hsdsd5vs4d5s5vsdds6vad5bs6bwglkavad68b8s9d7bkjbsdk56aafopq0as989as
+
 spring:
   application:
     name: Api-Gateway
@@ -16,6 +19,10 @@ spring:
             - StripPrefix=2
             #- RedirectTo=302, http://codingshuttle.com #it will redirect u to this link
             - name: LoggingOrdersFilters
+            - name: AuthenticationFilter
+              args:
+                isEnabled: true
+
 
 
         - id: Inventory-Service #application name
@@ -26,6 +33,7 @@ spring:
           filters:
               - StripPrefix=2
               - AddRequestHeader=X-Custom-Header, Anuj
+              - name: AuthenticationFilter
 
 #eureka client
 eureka:
