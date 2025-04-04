@@ -1,45 +1,47 @@
-jwt:
-  secretKey: hsdsd5vs4d5s5vsdds6vad5bs6bwglkavad68b8s9d7bkjbsdk56aafopq0as989as
+#jwt:
+#  secretKey: hsdsd5vs4d5s5vsdds6vad5bs6bwglkavad68b8s9d7bkjbsdk56aafopq0as989as
 
 spring:
   application:
     name: Api-Gateway
 
+spring.config.import: configserver:http://localhost:8888
 
-#api gateway config
-  cloud:
-    gateway:
-      routes:
-        - id: Order-Service #application name
-          uri: lb://ORDER-SERVICE
-          predicates:
-            - Path=/api/v1/orders/** , /api/v1/orders/<future endpoints>
-            - Method= GET, POST, PUT, DELETE
-          filters:
-            - StripPrefix=2
-            #- RedirectTo=302, http://codingshuttle.com #it will redirect u to this link
-            - name: LoggingOrdersFilters
-            - name: AuthenticationFilter
-              args:
-                isEnabled: true
-
-
-
-        - id: Inventory-Service #application name
-          uri: lb://INVENTORY-SERVICE
-          predicates:
-            - Path=/api/v1/inventory/** , /inventory/<future endpoints>
-            - Method= GET, POST, PUT, DELETE
-          filters:
-              - StripPrefix=2
-              - AddRequestHeader=X-Custom-Header, Anuj
-              - name: AuthenticationFilter
-
-#eureka client
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
-
-server:
-  port: 1000
+#
+##api gateway config
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: Order-Service #application name
+#          uri: lb://ORDER-SERVICE
+#          predicates:
+#            - Path=/api/v1/orders/** , /api/v1/orders/<future endpoints>
+#            - Method= GET, POST, PUT, DELETE
+#          filters:
+#            - StripPrefix=2
+#            #- RedirectTo=302, http://codingshuttle.com #it will redirect u to this link
+#            - name: LoggingOrdersFilters
+##            - name: AuthenticationFilter
+#              args:
+#                isEnabled: true
+#
+#
+#
+#        - id: Inventory-Service #application name
+#          uri: lb://INVENTORY-SERVICE
+#          predicates:
+#            - Path=/api/v1/inventory/** , /inventory/<future endpoints>
+#            - Method= GET, POST, PUT, DELETE
+#          filters:
+#              - StripPrefix=2
+#              - AddRequestHeader=X-Custom-Header, Anuj
+#              - name: AuthenticationFilter
+#
+##eureka client
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka
+#
+#server:
+#  port: 1000
