@@ -7,8 +7,8 @@ spring:
       server:
         git:
           uri: https://github.com/leo-soumyajit/ecommerce-config-server
-          username: leo-soumyajit
-          password: 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
+          username: ${GIT_USERNAME}
+          password: ${GIT_PASSWORD}
           default-label: main
 
 server:
