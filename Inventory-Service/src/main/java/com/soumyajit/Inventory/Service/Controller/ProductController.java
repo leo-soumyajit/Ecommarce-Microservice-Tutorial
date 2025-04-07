@@ -8,8 +8,10 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.query.Order;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
@@ -20,6 +22,7 @@ import java.util.List;
 @RequestMapping("/products")
 @RequiredArgsConstructor
 @Slf4j
+@RefreshScope
 public class ProductController {
 
     private final ProductService productService;
@@ -40,9 +43,12 @@ public class ProductController {
 //                .body(String.class);
 //    }
 
+    @Value("${my.var}")
+    private String path;
+
     @GetMapping("/fetching")
     public Object getHelloOrders(){
-        return orderClient.getHelloOrders();
+        return orderClient.getHelloOrders()+ path;
     }
 
 
